@@ -422,7 +422,7 @@ function createHotSpots() {
             } else {
                 if(hs.sceneId) {
                     div.onclick = function() {
-                        loadScene(hs.sceneId);
+                        loadScene(hs.sceneId, hs.scenePitch, hs.sceneYaw);
                         return false;
                     };
                     div.style.cursor = 'pointer';
@@ -535,7 +535,7 @@ function parseURLParameters() {
     mergeConfig(firstScene);
 }
 
-function mergeConfig(sceneId) {
+function mergeConfig(sceneId, pitch, yaw) {
     config = {};
     
     // Merge default config
@@ -555,6 +555,12 @@ function mergeConfig(sceneId) {
             config[k] = scene[k];
         }
         config.activeScene = sceneId;
+        if(pitch != null){
+            config.pitch = pitch;
+        }
+        if(yaw != null){
+            config.yaw = yaw;
+        }
     }
     
     // Merge URL and config file
@@ -736,14 +742,14 @@ function load() {
     animate();
 }
 
-function loadScene(sceneId) {
+function loadScene(sceneId, pitch, yaw) {
     loaded = false;
     
     // Destroy hot spots from previous scene
     destroyHotSpots();
     
     // Create the new config for the scene
-    mergeConfig(sceneId);
+    mergeConfig(sceneId, pitch, yaw);
     
     // Reload scene
     processOptions();
